@@ -1,119 +1,31 @@
-# ChemLearn Architecture
+## Science Platform Dependency Rule
 
-## Architectural Goal
+The Science Platform must remain independent of curriculum presentation.
 
-Build reusable scientific capabilities once and configure them for different lessons.
+Allowed direction:
 
-## Major Layers
+Course / Lesson
+→ Simulation / Activity
+→ Science Engine
+→ Scientific Data
 
-### 1. Learning Platform
+Scientific data must not depend on lessons.
 
-Responsible for:
+Scientific engines must not depend on React, PixiJS, or lesson components.
 
-- courses
-- chapters
-- lessons
-- learning outcomes
-- assessments
-- progress
-- localization
+Rendering systems may consume scientific state but must never determine
+scientific outcomes.
 
-### 2. Science Platform
+## Reusability Rule
 
-Responsible for reusable scientific systems.
-
-Planned modules:
-
-- Scientific Data Library
-- Atomic Engine
-- Bond Engine
-- Molecule Engine
-- Chemistry Reaction Engine
-- Stoichiometry Engine
-- Acid/Base Engine
-- Energetics Engine
-- Equilibrium Engine
-- Wet Lab Engine
-- Periodic Table Engine
-- Measurement Engine
-
-### 3. Simulation Platform
-
-Responsible for interaction and visualization.
+A general scientific object or capability should be implemented once.
 
 Examples:
 
-- drag
-- drop
-- pour
-- tilt
-- stir
-- heat
-- cool
-- attach
-- probe
-- measure
-- collect
-- particle effects
+- Sodium is defined once.
+- A beaker is implemented once.
+- Pouring is implemented once.
+- Atomic-number calculation is implemented once.
+- Neutralization rules are implemented once.
 
-## Separation of Responsibilities
-
-Interaction Engine:
-Determines what the student physically did.
-
-Science Engine:
-Determines the scientific result.
-
-Rendering Engine:
-Displays the resulting state.
-
-Course Engine:
-Determines the educational context.
-
-Example:
-
-Student pours NaOH
-→ Pour Engine measures transferred volume
-→ Chemistry Engine evaluates the reaction
-→ resulting chemical state is generated
-→ visual system displays the result
-→ lesson receives completion/progress events
-
-## Scientific Source of Truth
-
-Scientific data should be centralized.
-
-An element, chemical or compound should not have separate conflicting definitions in different chapters.
-
-Example:
-
-Sodium data should be defined once and reused by:
-
-- Atomic Structure
-- Chemical Bonding
-- Periodic Table
-- Group Properties
-
-## Chapter Architecture
-
-Chapters should configure reusable components rather than recreate them.
-
-Example:
-
-A neutralization lesson may request:
-
-- beaker
-- HCl
-- NaOH
-- pH meter
-- pouring capability
-- acid/base chemistry capability
-
-The lesson should not implement those systems itself.
-
-## Important Rule
-
-Visual effects never decide chemistry.
-
-Scientific engines calculate outcomes.
-Rendering systems visualize them.
+Lessons configure and reuse those capabilities.
